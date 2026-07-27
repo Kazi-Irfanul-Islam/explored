@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #09090b;
+  --color-foreground: #fafafa;
+  
+  /* Primary Theme Colors */
+  --color-primary: #8b5cf6; /* purple-500 */
+  --color-primary-foreground: #ffffff;
+  
+  /* Destructive/Error Colors */
+  --color-destructive: #ef4444; /* red-500 */
+  --color-destructive-foreground: #ffffff;
+  
+  --color-border: #27272a;
+}
+
+body {
+  @apply bg-background text-foreground bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-slate-900 via-purple-900 to-black min-h-screen selection:bg-primary/30;
+}
+
+.glass {
+  @apply bg-white/5 backdrop-blur-lg border border-white/10 shadow-xl;
+}
+
+.glass-card {
+  @apply bg-black/40 backdrop-blur-md border border-white/10 shadow-2xl hover:bg-black/50 hover:border-white/20 transition-all duration-300;
+}
+
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600;
+}
