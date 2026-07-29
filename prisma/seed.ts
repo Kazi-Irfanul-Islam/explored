@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 async function main() {
   const users = [
     ["antor", "dev", "admin"],
-    ["irfan", "bigSillyBird", "admin"],
+    ["irfan", "bigSillyBird", "user"],
     ["payel", "dev", "user"],
     ["morsalin", "sillyBird", "user"],
   ];
