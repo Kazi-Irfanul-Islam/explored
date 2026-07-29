@@ -11,16 +11,28 @@ async function main() {
     ["morsalin", "sillyBird", "user"],
   ];
 
+  const userRecords = [];
+
   for (const [username, password, role] of users) {
     const hashedPassword = await bcrypt.hash(password, 10);
-    await prisma.users.create({
-      data: {
+    const user = await prisma.users.upsert({
+      where: { username },
+      update: {
+        password: hashedPassword,
+        role: role as any,
+      },
+      create: {
         username,
         password: hashedPassword,
         role: role as any,
       },
     });
+    userRecords.push(user);
   }
+
+  // Clear existing messages and logs to prevent duplicates on re-run
+  await prisma.contact_messages.deleteMany();
+  await prisma.travel_logs.deleteMany();
 
   const contact_messages = [
     ["Samania Jannat", "samania@example.com", "General Inquiry", "I really love the new design of Explored! Great job."],
@@ -35,10 +47,10 @@ async function main() {
   }
 
   const travel_logs = [
-    [3, "Weekend in Cox’s Bazar", "A short beach getaway with family.", "family"],
-    [3, "Dhaka Food Trail", "Exploring street food and local restaurants.", "solo"],
-    [4, "Business Trip to Singapore", "Meetings, hotels, and city walks.", "business"],
-    [4, "Sylhet Nature Escape", "Tea gardens, hills, and waterfalls.", "leisure"],
+    [userRecords[2].id, "Weekend in Cox’s Bazar", "A short beach getaway with family.", "family"],
+    [userRecords[2].id, "Dhaka Food Trail", "Exploring street food and local restaurants.", "solo"],
+    [userRecords[3].id, "Business Trip to Singapore", "Meetings, hotels, and city walks.", "business"],
+    [userRecords[3].id, "Sylhet Nature Escape", "Tea gardens, hills, and waterfalls.", "leisure"],
   ];
 
   for (const [owner_id, title, description, journey_type] of travel_logs) {
